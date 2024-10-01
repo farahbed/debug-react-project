@@ -66,7 +66,15 @@ describe("When Events is created", () => {
           <Events />
         </DataProvider>
       );
-      await screen.findByText("Forum #productCON");
+      await screen.findByText("Forum #productCON"); // 1
+      fireEvent(
+        await screen.findByText("collapse-button-testid"),
+        new MouseEvent("click", {
+          cancelable: true,
+          bubbles: true,
+        })
+      );
+
       fireEvent(
         await screen.findByTestId("collapse-button-testid"),
         new MouseEvent("click", {
@@ -83,7 +91,7 @@ describe("When Events is created", () => {
       );
 
       await screen.findByText("Conférence #productCON");
-      expect(screen.queryByText("Forum #productCON")).not.toBeInTheDocument(); //erreur a corriger
+      expect(screen.queryByText("Forum #productCON")).not.toBeInTheDocument();
     });
   });
 
