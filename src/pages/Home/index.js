@@ -14,7 +14,8 @@ import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
   const { data } = useData();
-  const last = data?.events?.[data.events.length - 1];
+  const last = data?.events && data.events.length > 0 ? data.events[data.events.length - 1] : null;
+
 
   console.log("Last event data:", last); // Vérifie ce que contient last
 

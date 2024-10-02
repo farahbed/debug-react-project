@@ -16,7 +16,7 @@ const Select = ({
   const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
   const changeValue = (newValue) => {
-    onChange();
+    onChange(newValue); // onChange is called when a new value is selected in the select it fixed the selected bug
     setValue(newValue);
     setCollapsed(newValue);
   };
