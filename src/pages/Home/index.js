@@ -13,7 +13,19 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {last} = useData()
+  const { data } = useData();
+  const last = data?.events?.[data.events.length - 1];
+
+  console.log("Last event data:", last); // Vérifie ce que contient last
+
+  // Vérifie si last contient bien des données
+  if (!last) {
+    return <div>Chargement des données...</div>; // Message de chargement
+  }
+
+
+
+
   return <>
     <header>
       <Menu />
@@ -114,16 +126,22 @@ const Page = () => {
       </div>
     </main>
     <footer className="row">
-      <div className="col presta">
-        <h3>Notre derniére prestation</h3>
-        <EventCard // erreur a corriger
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label={last?.type}
-        />
-      </div>
+    <div className="col presta">
+  <h3>Notre dernière prestation</h3>
+  {last && last.cover && last.title && last.date ? ( // Vérifie si toutes les valeurs nécessaires existent
+    <EventCard
+      imageSrc={last.cover}
+      title={last.title}
+      date={new Date(last.date)} // Assure-toi que la date est correctement formatée
+      small
+      label="boom"
+    />
+  ) : (
+    <div>Aucune prestation récente disponible.</div> // Affiche un message si les données sont manquantes
+  )}
+</div>
+
+      
       <div className="col contact">
         <h3>Contactez-nous</h3>
         <address>45 avenue de la République, 75000 Paris</address>

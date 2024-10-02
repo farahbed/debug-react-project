@@ -11,13 +11,14 @@ const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData();
-  const [type, setType] = useState();
+  const [type, setType] = useState(); 
   const [currentPage, setCurrentPage] = useState(1);
-  const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events) || []
-  ).filter((event, index) => {
+
+  const filteredEventsBeforePagination = (!type
+    ? data?.events
+    : data?.events.filter((event) => event.type === type)) || [];
+
+  const filteredEvents = filteredEventsBeforePagination.filter((_events, index) => {
     if (
       (currentPage - 1) * PER_PAGE <= index &&
       PER_PAGE * currentPage > index
@@ -26,12 +27,16 @@ const EventList = () => {
     }
     return false;
   });
+
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
   };
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+
+  const pageNumber = Math.ceil(filteredEventsBeforePagination.length / PER_PAGE); // change the number 9 to the number of events per page
+
   const typeList = new Set(data?.events.map((event) => event.type));
+
   return (
     <>
       {error && <div>An error occured</div>}
@@ -74,3 +79,4 @@ const EventList = () => {
 };
 
 export default EventList;
+

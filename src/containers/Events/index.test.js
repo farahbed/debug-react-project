@@ -38,58 +38,49 @@ const data = {
 };
 
 describe("When Events is created", () => {
-  it("a list of event card is displayed", async () => {
+  it("a list of event cards is displayed", async () => {
     api.loadData = jest.fn().mockReturnValue(data);
     render(
       <DataProvider>
         <Events />
       </DataProvider>
     );
-    await screen.findByText("avril");
+    // Vérifie que la date "avril" est affichée
+    await screen.findByText(/avril/i);
   });
-  describe("and an error occured", () => {
+
+  describe("and an error occurred", () => {
     it("an error message is displayed", async () => {
-      api.loadData = jest.fn().mockRejectedValue();
+      api.loadData = jest.fn().mockRejectedValue(new Error("Erreur"));
       render(
         <DataProvider>
           <Events />
         </DataProvider>
       );
-      expect(await screen.findByText("An error occured")).toBeInTheDocument();
+      // Vérifie que le message d'erreur est affiché
+      expect(await screen.findByText(/An error occured/i)).toBeInTheDocument();
     });
   });
+
   describe("and we select a category", () => {
-    it.only("an filtered list is displayed", async () => {
+    it("a filtered list is displayed", async () => {
       api.loadData = jest.fn().mockReturnValue(data);
       render(
         <DataProvider>
           <Events />
         </DataProvider>
       );
-      await screen.findByText("Forum #productCON"); // 1
-      fireEvent(
-        await screen.findByText("collapse-button-testid"),
-        new MouseEvent("click", {
-          cancelable: true,
-          bubbles: true,
-        })
-      );
 
-      fireEvent(
-        await screen.findByTestId("collapse-button-testid"),
-        new MouseEvent("click", {
-          cancelable: true,
-          bubbles: true,
-        })
-      );
-      fireEvent(
-        (await screen.findAllByText("soirée entreprise"))[0],
-        new MouseEvent("click", {
-          cancelable: true,
-          bubbles: true,
-        })
-      );
+      // Vérifie que "Forum #productCON" est affiché avant la sélection de la catégorie
+      await screen.findByText("Forum #productCON");
 
+      // Simule l'ouverture du collapse
+      fireEvent.click(await screen.findByTestId("collapse-button-testid"));
+
+      // Simule la sélection d'une catégorie, ici "soirée entreprise"
+      fireEvent.click(await screen.findByText("soirée entreprise"));
+
+      // Vérifie que "Conférence #productCON" est toujours affichée et que "Forum #productCON" a été filtrée
       await screen.findByText("Conférence #productCON");
       expect(screen.queryByText("Forum #productCON")).not.toBeInTheDocument();
     });
@@ -104,14 +95,10 @@ describe("When Events is created", () => {
         </DataProvider>
       );
 
-      fireEvent(
-        await screen.findByText("Conférence #productCON"),
-        new MouseEvent("click", {
-          cancelable: true,
-          bubbles: true,
-        })
-      );
+      // Simule un clic sur l'événement "Conférence #productCON"
+      fireEvent.click(await screen.findByText("Conférence #productCON"));
 
+      // Vérifie que les détails de l'événement sont affichés
       await screen.findByText("24-25-26 Février");
       await screen.findByText("1 site web dédié");
     });
