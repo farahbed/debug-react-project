@@ -19,10 +19,10 @@ const Page = () => {
 
   console.log("Last event data:", last); // Vérifie ce que contient last
 
-
-
-
-
+  if (!data || !data.focus) {
+    return <div>Loading...</div>; // Ou un message d'erreur
+  }
+  
   return <>
     <header>
       <Menu />
