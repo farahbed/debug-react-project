@@ -19,10 +19,6 @@ const Page = () => {
 
   console.log("Last event data:", last); // Vérifie ce que contient last
 
-  // Vérifie si last contient bien des données
-  if (!last) {
-    return <div>Chargement des données...</div>; // Message de chargement
-  }
 
 
 

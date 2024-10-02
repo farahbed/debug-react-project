@@ -4,53 +4,37 @@ import Home from "./index";
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
     render(<Home />);
-    screen.debug();
+
+    // Attendre que l'état de chargement disparaisse
+    await waitFor(() => {
+      expect(screen.queryByText("Chargement des données...")).not.toBeInTheDocument();
+    });
+
+    // Attendre que le conteneur du formulaire soit présent
     await waitFor(() => {
       expect(screen.getByTestId("container-form-testid")).toBeInTheDocument();
     });
 
-    await waitFor(() => {
-  
-    screen.findByText("Email");
-    screen.findByText("Nom");
-    screen.findByText("Prénom");
-    screen.findByText("Personel / Entreprise");
-    
-  });
-
+    // Vérifier la présence des champs
+    expect(screen.getByText("Email")).toBeInTheDocument();
+    expect(screen.getByText("Nom")).toBeInTheDocument();
+    expect(screen.getByText("Prénom")).toBeInTheDocument();
+    expect(screen.getByText("Personel / Entreprise")).toBeInTheDocument();
   });
 
   describe("and a click is triggered on the submit button", () => {
     it("the success message is displayed", async () => {
       render(<Home />);
-      screen.debug();
-      
-      fireEvent(
-        await screen.findByText("Envoyer"),
-        new MouseEvent("click", {
-          cancelable: true,
-          bubbles: true,
-        })
-      );
-      await screen.findByText("En cours");
-      await screen.findByText("Message envoyé !");
+
+      // Attendre et simuler le clic sur le bouton "Envoyer"
+      const submitButton = await screen.findByText("Envoyer");
+      fireEvent.click(submitButton);
+
+      // Vérifier les messages après soumission
+      await waitFor(() => {
+        expect(screen.getByText("En cours")).toBeInTheDocument();
+        expect(screen.getByText("Message envoyé !")).toBeInTheDocument();
+      });
     });
   });
-
-});
-
-
-describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    // to implement
-  })
-  it("a list a people is displayed", () => {
-    // to implement
-  })
-  it("a footer is displayed", () => {
-    // to implement
-  })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
-  })
 });
