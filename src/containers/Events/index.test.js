@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Events from "./index"; // change ./events to ./index
 import React from "react";
 import { api, DataProvider } from "../../contexts/DataContext";

@@ -16,18 +16,31 @@ describe("When Form is created", () => {
     });
 
     // Vérifier la présence des champs
-    expect(screen.getByText("Email")).toBeInTheDocument();
-    expect(screen.getByText("Nom")).toBeInTheDocument();
-    expect(screen.getByText("Prénom")).toBeInTheDocument();
-    expect(screen.getByText("Personel / Entreprise")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+    expect(screen.getByLabelText("Nom")).toBeInTheDocument();
+    expect(screen.getByLabelText("Prénom")).toBeInTheDocument();
+    expect(screen.getByLabelText("Personel / Entreprise")).toBeInTheDocument();
   });
 
   describe("and a click is triggered on the submit button", () => {
     it("the success message is displayed", async () => {
       render(<Home />);
+      //remplir les champs du formulaire
+      fireEvent.change(screen.getByLabelText("Email"), {
+        target: { value: "test@test" },
+      })
+      fireEvent.change(screen.getByLabelText("Nom"), {
+        target: { value: "test" },
+      })
+      fireEvent.change(screen.getByLabelText("Prénom"), {
+        target: { value: "test" },
+      })
+      fireEvent.change(screen.getByLabelText("Personel / Entreprise"), {
+        target: { value: "test" },
+      })
 
       // Attendre et simuler le clic sur le bouton "Envoyer"
-      const submitButton = await screen.findByText("Envoyer");
+      const submitButton = screen.getByText("Envoyer");
       fireEvent.click(submitButton);
 
       // Vérifier les messages après soumission
