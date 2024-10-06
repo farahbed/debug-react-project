@@ -12,18 +12,15 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
+  
 const Page = () => {
   const { data } = useData();
-  const last = data?.events && data.events.length > 0 ? data.events[data.events.length - 1] : null;
+  const last = data?.events[data.events.length - 1];
+ console.log("Last event data:", last); // Vérifie ce que contient last
 
-
-  console.log("Last event data:", last); // Vérifie ce que contient last
-
-  if (!data || !data.focus) {
-    return <div>Loading...</div>; // Ou un message d'erreur
-  }
-  
-  return <>
+ return (
+  <>
     <header>
       <Menu />
     </header>
@@ -170,6 +167,7 @@ const Page = () => {
       </div>
     </footer>
   </>
+  );
 }
 
 export default Page;
