@@ -16,8 +16,10 @@ import { useData } from "../../contexts/DataContext";
   
 const Page = () => {
   const { data } = useData();
-  const last = data?.events[data.events.length - 1];
- console.log("Last event data:", last); // Vérifie ce que contient last
+  console.log("Données des événements :", data?.events || "Aucune donnée d'événements trouvée");
+
+  const last = data? data.events[data.events.length - 1] : null;
+ console.log(last); // Vérifie ce que contient last
 
  return (
   <>
@@ -122,20 +124,16 @@ const Page = () => {
     <footer className="row">
     <div className="col presta">
   <h3>Notre dernière prestation</h3>
-  {last && last.cover && last.title && last.date ? ( // Vérifie si toutes les valeurs nécessaires existent
+  {last && ( 
     <EventCard
-      imageSrc={last.cover}
-      title={last.title}
-      date={new Date(last.date)} // Assure-toi que la date est correctement formatée
+      imageSrc={last?.cover}
+      title={last?.title}
+      date={new Date(last?.date)} // Assure-toi que la date est correctement formatée
       small
-      label="boom"
+      label={last?.type}
     />
-  ) : (
-    <div>Aucune prestation récente disponible.</div> // Affiche un message si les données sont manquantes
   )}
 </div>
-
-      
       <div className="col contact">
         <h3>Contactez-nous</h3>
         <address>45 avenue de la République, 75000 Paris</address>

@@ -25,12 +25,7 @@ const Slider = () => {
     return () => clearInterval(interval);
   }, [byDateDesc]);
 
-  // Log the events data for debugging
-  console.log("Events data:", byDateDesc);
 
-  const handleRadioChange = (idx) => {
-    setIndex(idx); // Mettre à jour l'index en fonction du bouton radio sélectionné
-  };
 
   return (
     <div className="SlideCardList">
@@ -56,7 +51,7 @@ const Slider = () => {
                     type="radio"
                     name="radio-button"
                     checked={index === radioIdx} // Mettre à jour la condition pour le checked
-                    onChange={() => handleRadioChange(radioIdx)} // Gestionnaire d'événements pour changer l'index
+                    readOnly
                   />
                 ))}
               </div>
