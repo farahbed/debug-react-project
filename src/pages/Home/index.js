@@ -13,10 +13,13 @@ import Modal from '../../containers/Modal';
 import { useData } from '../../contexts/DataContext';
 
 const Page = () => {
-  const { data } = useData();
+const { data } = useData();
 
-  // Récupération du dernier événement
-  const lastEvent = data?.events?.length > 0 ? data.events[data.events.length - 1] : null;
+  // Trier les événements par date décroissante (le plus récent en premier)
+  const sortedEvents = data?.events?.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Récupérer le plus récent événement
+  const lastEvent = sortedEvents?.[0];
   console.log(lastEvent);
 
   return (
